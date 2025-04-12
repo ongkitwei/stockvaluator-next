@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { fetchData } from "../../../../util/functions";
-import supabase from "../../../../util/supabase";
+import { supabase } from "../../../../util/supabase";
 
 export async function GET() {
   try {
