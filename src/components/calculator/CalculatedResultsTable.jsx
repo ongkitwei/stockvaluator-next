@@ -12,13 +12,14 @@ import {
   favouritesButtonAtom,
 } from "../../../jotai/CalculatorAtoms";
 import FavouritesButton from "../../../ui/FavouritesButton";
+import { usernameAtom, UsernameAtom } from "../../../jotai/UsernameAtoms";
 
 function CalculatedResultsTable() {
   const [calculatorObject, setCalculatorObject] = useAtom(calculatorObjectAtom);
   const [discountedValue, setDiscountedValue] = useAtom(discountedValueAtom);
   const [fcfs, setArrayFcf] = useAtom(arrayFcfAtom);
   const [favouritesButton, setFavouritesButton] = useAtom(favouritesButtonAtom);
-
+  const [name, setName] = useAtom(usernameAtom);
   const handleCalculateButtonState = useAtomValue(
     handleCalculateButtonStateAtom
   );
@@ -73,6 +74,7 @@ function CalculatedResultsTable() {
             Stock_Name: calculatorObject.nameOfStock,
             Ticker_Symbol: calculatorObject.tickerSymbol,
             IV: calculatorObject.intrinsicValue,
+            Username: name,
           });
           console.log("Added: ", response.data);
         } else {
@@ -81,7 +83,7 @@ function CalculatedResultsTable() {
           //   `http://localhost:4000/api/supabase`
           // );
           const response = await axios.delete(`/api/supabase/watchlist`, {
-            data: { Ticker_Symbol: tickerSymbol },
+            data: { Ticker_Symbol: tickerSymbol, Username: name },
           });
           console.log("Deleted:", response.data);
         }

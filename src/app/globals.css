@@ -9,4 +9,12 @@
   .navbar-header {
     @apply p-3 rounded-full link link-hover;
   }
+
+  .calculator-table-text {
+    @apply text-sm sm:text-base;
+  }
+
+  .calculator-workflow-button {
+    @apply w-[25vw] md:w-[15vw];
+  }
 }

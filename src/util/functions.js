@@ -62,8 +62,11 @@ export const getLastClosePrice = async (ticker) => {
 };
 
 // Fetch data from Supabase table
-export const fetchData = async (tableName) => {
-  const { data, error } = await supabase.from(tableName).select();
+export const fetchData = async (tableName, username) => {
+  const { data, error } = await supabase
+    .from(tableName)
+    .select()
+    .eq("Username", username);
   if (error) {
     throw new Error(
       `(server side) Error fetching data from ${tableName}: ${error.message}`

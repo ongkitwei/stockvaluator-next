@@ -148,9 +148,9 @@ function CalculatorWorkflow() {
 
   return (
     <div>
-      <div className="flex flex-row items-center justify-center gap-8 pt-3 pb-7">
+      <div className="flex flex-row items-center justify-center gap-8 pt-3 pb-7 w-auto">
         <a
-          className="relative inline-flex items-center justify-center px-8 sm:px-14 py-4 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group mt-5 hover:cursor-pointer"
+          className="relative inline-flex items-center justify-center py-4 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group mt-5 hover:cursor-pointer calculator-workflow-button"
           onClick={handleClearInputFieldButton}
         >
           <span className="absolute w-0 h-0 transition-all duration-500 ease-out bg-red-500 rounded-full group-hover:w-56 group-hover:h-56"></span>
@@ -158,7 +158,7 @@ function CalculatorWorkflow() {
           <span className="relative">Clear Input</span>
         </a>
         <a
-          className="relative inline-flex items-center justify-center px-8 sm:px-14 py-4 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group mt-5 hover:cursor-pointer"
+          className="relative inline-flex items-center justify-center py-4 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group mt-5 hover:cursor-pointer calculator-workflow-button"
           onClick={handleCalculateButton}
           href="#calculatedResults"
         >

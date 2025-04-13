@@ -1,29 +1,18 @@
 import { NextResponse } from "next/server";
-import { fetchData } from "../../../../util/functions";
 import { supabase } from "../../../../util/supabase";
-
-export async function GET() {
-  try {
-    const data = await fetchData("Watchlist");
-    console.log(data);
-    return NextResponse.json(data);
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: error.message });
-  }
-}
 
 export async function POST(request) {
   try {
-    const { Stock_Name, Ticker_Symbol, IV } = await request.json();
+    const { Stock_Name, Ticker_Symbol, IV, Username } = await request.json();
     console.log("Adding to watchlist to SUPABASE:", {
       Stock_Name,
       Ticker_Symbol,
       IV,
+      Username,
     });
     const { data, error } = await supabase
       .from("Watchlist")
-      .insert([{ Stock_Name, Ticker_Symbol, IV }])
+      .insert([{ Stock_Name, Ticker_Symbol, IV, Username }])
       .select();
     if (error) {
       console.error("Supabase Error:", error);
@@ -43,11 +32,13 @@ export async function POST(request) {
 
 export async function DELETE(request) {
   try {
-    const { Ticker_Symbol } = await request.json();
+    const { Ticker_Symbol, Username } = await request.json();
     const { error } = await supabase
       .from("Watchlist")
       .delete()
-      .eq("Ticker_Symbol", Ticker_Symbol);
+      .eq("Ticker_Symbol", Ticker_Symbol)
+      .eq("Username", Username);
+
     if (error) {
       console.error("Supabase Error:", error);
       return NextResponse.json({ error: error.message });

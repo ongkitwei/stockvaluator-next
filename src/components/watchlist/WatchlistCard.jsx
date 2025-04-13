@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { MdAttachMoney } from "react-icons/md";
 import { GiMoneyStack } from "react-icons/gi";
 import WatchlistChart from "./WatchlistChart";
@@ -11,6 +11,8 @@ import {
   watchlistObjectAtom,
   lastCloseAtom,
 } from "../../../jotai/WatchlistAtoms";
+import { usernameAtom } from "../../../jotai/UsernameAtoms";
+
 function WatchlistCard({
   stockName,
   currentSharePrice,
@@ -20,6 +22,8 @@ function WatchlistCard({
 }) {
   const [watchlistObject, setWatchlistObject] = useAtom(watchlistObjectAtom);
   const [lastClose, setLastClose] = useAtom(lastCloseAtom);
+  const [name, setName] = useAtom(usernameAtom);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     console.log("After deleting", watchlistObject);
@@ -29,9 +33,9 @@ function WatchlistCard({
     const fetchSupabaseTableData = async () => {
       const newLastCloseArray = [];
       const lastCloseTickerArray = [];
-      const response = await fetch("/api/supabase/watchlist");
-      const result = await response.json();
-
+      const response = await axios.get(`/api/supabase/watchlist/${name}`);
+      const result = await response.data;
+      console.log("result of axios get is", result);
       const filteredData = result.map((item) => ({
         nameOfStock: item.Stock_Name,
         tickerSymbol: item.Ticker_Symbol,
@@ -63,6 +67,7 @@ function WatchlistCard({
         console.error(`Error fetching data for the tickers}:`, error);
       }
       setWatchlistObject(filteredData);
+      setIsLoading(!isLoading);
     };
     fetchSupabaseTableData();
   }, []);
@@ -79,7 +84,7 @@ function WatchlistCard({
     console.log(`delete ${stockName} from supabase`);
     console.log("After deleting", watchlistObject);
     const response = await axios.delete(`/api/supabase/watchlist`, {
-      data: { Ticker_Symbol: tickerSymbol },
+      data: { Ticker_Symbol: tickerSymbol, Username: name },
     });
     console.log("Delete response", response);
   };
@@ -95,7 +100,13 @@ function WatchlistCard({
   };
   const ivPercentage = calculateIvPercentage();
   return (
-    <div className="w-[300px] h-[280px] sm:w-[350px] md:w-[480px] bg-black border-2 border-gray-800 grid grid-rows-3 place-items-center px-5 rounded-2xl hover:cursor-pointer">
+    <div
+      className={` ${
+        isLoading
+          ? "loading loading-infinity loading-2xl"
+          : "w-[300px] h-[280px] sm:w-[350px] md:w-[480px] bg-black border-2 border-gray-800 grid grid-rows-3 place-items-center px-5 rounded-2xl hover:cursor-pointer"
+      }`}
+    >
       <div className="flex flex-row justify-center items-center gap-x-4 pt-5 pb-12">
         {" "}
         <h1
